@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f766e">
+<title>عيادة د. حمداد هشام</title>
+
+<style>
+*{box-sizing:border-box}
+:root{
+ --primary:#0f766e;
+ --primary2:#14b8a6;
+ --dark:#0f172a;
+ --muted:#64748b;
+ --bg:#f1f5f9;
+ --white:#fff;
+ --border:#e2e8f0;
+ --danger:#dc2626;
+ --warning:#d97706;
+ --success:#16a34a;
+ --shadow:0 8px 25px rgba(15,23,42,.07);
+}
+body{
+ margin:0;
+ font-family:Tahoma,Arial,sans-serif;
+ background:var(--bg);
+ color:#1e293b;
+}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+ width:250px;
+ background:linear-gradient(180deg,#0f766e,#115e59);
+ color:white;
+ padding:20px 14px;
+ position:fixed;
+ right:0;
+ top:0;
+ bottom:0;
+ z-index:20;
+ overflow:auto;
+}
+.logo{
+ text-align:center;
+ padding:10px 5px 25px;
+ border-bottom:1px solid rgba(255,255,255,.15);
+ margin-bottom:18px;
+}
+.logo .doctor-icon{
+ width:65px;height:65px;border-radius:50%;
+ background:white;color:var(--primary);
+ display:flex;align-items:center;justify-content:center;
+ margin:auto;font-size:30px;font-weight:bold;
+}
+.logo h2{margin:12px 0 4px;font-size:19px}
+.logo p{margin:0;color:#ccfbf1;font-size:12px}
+.nav button{
+ width:100%;
+ border:0;
+ background:transparent;
+ color:#d1fae5;
+ padding:13px 14px;
+ border-radius:10px;
+ text-align:right;
+ margin-bottom:5px;
+ font-size:14px;
+ transition:.2s;
+}
+.nav button:hover,.nav button.active{
+ background:rgba(255,255,255,.16);
+ color:white;
+}
+.nav button span{margin-left:8px}
+.main{
+ flex:1;
+ margin-right:250px;
+ min-width:0;
+}
+.topbar{
+ height:70px;
+ background:white;
+ border-bottom:1px solid var(--border);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ padding:0 28px;
+ position:sticky;
+ top:0;
+ z-index:10;
+}
+.topbar h3{margin:0;font-size:18px}
+.content{padding:25px;max-width:1500px;margin:auto}
+.page{display:none}
+.page.active{display:block}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:16px;
+ margin-bottom:22px;
+}
+.card{
+ background:white;
+ border:1px solid var(--border);
+ border-radius:15px;
+ padding:20px;
+ box-shadow:var(--shadow);
+}
+.stat{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+}
+.stat-icon{
+ width:48px;height:48px;border-radius:12px;
+ display:flex;align-items:center;justify-content:center;
+ font-size:23px;
+ background:#ccfbf1;
+ color:var(--primary);
+}
+.stat h2{margin:7px 0 0;font-size:25px}
+.stat p{margin:0;color:var(--muted);font-size:13px}
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:10px;
+ margin:25px 0 14px;
+}
+.section-title h2{font-size:18px;margin:0}
+.btn{
+ border:0;
+ border-radius:9px;
+ padding:10px 15px;
+ font-size:13px;
+ background:var(--primary);
+ color:white;
+}
+.btn:hover{background:#0d625c}
+.btn.secondary{background:#e2e8f0;color:#334155}
+.btn.success{background:var(--success)}
+.btn.danger{background:var(--danger)}
+.btn.warning{background:var(--warning)}
+.btn.small{padding:7px 10px;font-size:12px}
+.toolbar{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:15px;
+}
+.search{
+ flex:1;
+ min-width:220px;
+ padding:11px 13px;
+ border:1px solid var(--border);
+ border-radius:9px;
+ outline:none;
+ background:white;
+}
+.search:focus,input:focus,select:focus,textarea:focus{
+ border-color:var(--primary2);
+ box-shadow:0 0 0 3px rgba(20,184,166,.1);
+}
+.table-wrap{
+ overflow:auto;
+ background:white;
+ border-radius:14px;
+ border:1px solid var(--border);
+}
+table{width:100%;border-collapse:collapse;min-width:750px}
+th,td{
+ padding:13px 12px;
+ border-bottom:1px solid #eef2f7;
+ text-align:right;
+ font-size:13px;
+}
+th{background:#f8fafc;color:#475569}
+tr:hover td{background:#fafafa}
+.badge{
+ display:inline-block;
+ padding:5px 9px;
+ border-radius:20px;
+ font-size:11px;
+}
+.badge.green{background:#dcfce7;color:#166534}
+.badge.orange{background:#ffedd5;color:#9a3412}
+.badge.red{background:#fee2e2;color:#991b1b}
+.badge.blue{background:#dbeafe;color:#1e40af}
+.badge.gray{background:#e2e8f0;color:#475569}
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:rgba(15,23,42,.55);
+ z-index:100;
+ padding:20px;
+ overflow:auto;
+}
+.modal.show{display:flex;align-items:flex-start;justify-content:center}
+.modal-box{
+ width:min(800px,100%);
+ background:white;
+ border-radius:16px;
+ margin:30px auto;
+ box-shadow:0 25px 60px rgba(0,0,0,.2);
+}
+.modal-head{
+ padding:18px 20px;
+ border-bottom:1px solid var(--border);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+.modal-head h3{margin:0}
+.close{
+ border:0;background:#f1f5f9;
+ width:35px;height:35px;border-radius:50%;
+ font-size:18px;
+}
+.modal-body{padding:20px}
+.form-grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:14px;
+}
+.field label{
+ display:block;
+ font-size:12px;
+ color:#475569;
+ margin-bottom:6px;
+}
+.field input,.field select,.field textarea{
+ width:100%;
+ border:1px solid var(--border);
+ border-radius:8px;
+ padding:10px;
+ outline:none;
+ background:white;
+}
+.field textarea{min-height:90px;resize:vertical}
+.full{grid-column:1/-1}
+.modal-actions{
+ display:flex;
+ justify-content:flex-start;
+ gap:8px;
+ margin-top:20px;
+ padding-top:15px;
+ border-top:1px solid var(--border);
+}
+.empty{
+ text-align:center;
+ color:#94a3b8;
+ padding:40px 20px;
+}
+.dashboard-welcome{
+ background:linear-gradient(135deg,#0f766e,#14b8a6);
+ color:white;
+ border-radius:18px;
+ padding:25px;
+ margin-bottom:20px;
+}
+.dashboard-welcome h1{margin:0 0 8px;font-size:24px}
+.dashboard-welcome p{margin:0;color:#d9fffa;font-size:13px}
+.two-col{
+ display:grid;
+ grid-template-columns:1.4fr 1fr;
+ gap:18px;
+}
+.quick-actions{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+}
+.quick-actions button{
+ padding:15px;
+ border:1px solid var(--border);
+ background:#f8fafc;
+ border-radius:10px;
+ color:#334155;
+}
+.quick-actions button:hover{border-color:var(--primary2);color:var(--primary)}
+.patient-head{
+ background:linear-gradient(135deg,#f0fdfa,#ecfeff);
+ border:1px solid #ccfbf1;
+ border-radius:14px;
+ padding:18px;
+ margin-bottom:15px;
+}
+.patient-head h2{margin:0 0 5px}
+.patient-head p{margin:3px 0;color:#64748b;font-size:13px}
+.detail-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:12px;
+}
+.detail-item{
+ background:#f8fafc;
+ padding:12px;
+ border-radius:9px;
+}
+.detail-item small{color:#64748b;display:block;margin-bottom:5px}
+.detail-item strong{font-size:13px}
+.toast{
+ position:fixed;
+ bottom:20px;
+ left:20px;
+ background:#0f172a;
+ color:white;
+ padding:13px 18px;
+ border-radius:10px;
+ z-index:999;
+ opacity:0;
+ transform:translateY(20px);
+ transition:.25s;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+.mobile-menu{display:none}
+@media(max-width:1000px){
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .two-col{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+ .sidebar{
+  transform:translateX(100%);
+  transition:.25s;
+ }
+ .sidebar.open{transform:translateX(0)}
+ .main{margin-right:0}
+ .mobile-menu{display:block}
+ .topbar{padding:0 15px}
+ .content{padding:15px}
+ .grid{grid-template-columns:1fr 1fr;gap:10px}
+ .form-grid{grid-template-columns:1fr}
+ .full{grid-column:auto}
+ .detail-grid{grid-template-columns:1fr}
+ .stat h2{font-size:20px}
+}
+@media(max-width:430px){
+ .grid{grid-template-columns:1fr}
+}
+@media print{
+ .sidebar,.topbar,.toolbar,.no-print,.modal-actions{display:none!important}
+ .main{margin:0}
+ .content{padding:0}
+ body{background:white}
+ .card{box-shadow:none}
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<aside class="sidebar" id="sidebar">
+ <div class="logo">
+  <div class="doctor-icon">د</div>
+  <h2>عيادة د. حمداد هشام</h2>
+  <p>نظام إدارة العيادة الطبية</p>
+ </div>
+
+ <div class="nav">
+  <button class="active" onclick="showPage('dashboard',this)">🏠 <span>لوحة التحكم</span></button>
+  <button onclick="showPage('patients',this)">👥 <span>المرضى</span></button>
+  <button onclick="showPage('appointments',this)">📅 <span>المواعيد</span></button>
+  <button onclick="showPage('medical',this)">🩺 <span>الملفات الطبية</span></button>
+  <button onclick="showPage('prescriptions',this)">💊 <span>الوصفات الطبية</span></button>
+  <button onclick="showPage('invoices',this)">💰 <span>الفواتير</span></button>
+  <button onclick="showPage('backup',this)">💾 <span>النسخ الاحتياطي</span></button>
+ </div>
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+ <button class="btn secondary mobile-menu" onclick="toggleSidebar()">☰</button>
+ <h3 id="pageTitle">لوحة التحكم</h3>
+ <div>
+  <span style="font-size:12px;color:#64748b" id="today"></span>
+ </div>
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+ <div class="dashboard-welcome">
+  <h1>مرحبًا بك، د. حمداد هشام 👋</h1>
+  <p>إدارة مرضاك ومواعيدك وملفاتك الطبية من مكان واحد.</p>
+ </div>
+
+ <div class="grid">
+  <div class="card stat">
+   <div><p>إجمالي المرضى</p><h2 id="statPatients">0</h2></div>
+   <div class="stat-icon">👥</div>
+  </div>
+  <div class="card stat">
+   <div><p>مواعيد اليوم</p><h2 id="statAppointments">0</h2></div>
+   <div class="stat-icon">📅</div>
+  </div>
+  <div class="card stat">
+   <div><p>الاستشارات</p><h2 id="statConsultations">0</h2></div>
+   <div class="stat-icon">🩺</div>
+  </div>
+  <div class="card stat">
+   <div><p>إجمالي الفواتير</p><h2 id="statRevenue">0 دج</h2></div>
+   <div class="stat-icon">💰</div>
+  </div>
+ </div>
+
+ <div class="two-col">
+  <div class="card">
+   <div class="section-title">
+    <h2>مواعيد اليوم</h2>
+    <button class="btn small" onclick="showPage('appointments')">كل المواعيد</button>
+   </div>
+   <div id="todayAppointments"></div>
+  </div>
+
+  <div class="card">
+   <div class="section-title"><h2>إجراءات سريعة</h2></div>
+   <div class="quick-actions">
+    <button onclick="openPatientModal()">➕ إضافة مريض</button>
+    <button onclick="openAppointmentModal()">📅 موعد جديد</button>
+    <button onclick="openConsultationModal()">🩺 استشارة</button>
+    <button onclick="openInvoiceModal()">💰 فاتورة</button>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- PATIENTS -->
+<section class="page" id="patients">
+ <div class="section-title">
+  <h2>إدارة المرضى</h2>
+  <button class="btn" onclick="openPatientModal()">+ إضافة مريض</button>
+ </div>
+
+ <div class="toolbar">
+  <input class="search" id="patientSearch" placeholder="ابحث بالاسم أو الهاتف أو رقم الملف..." oninput="renderPatients()">
+ </div>
+
+ <div class="table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>رقم الملف</th>
+     <th>الاسم</th>
+     <th>الهاتف</th>
+     <th>الجنس</th>
+     <th>العمر</th>
+     <th>تاريخ التسجيل</th>
+     <th>الإجراءات</th>
+    </tr>
+   </thead>
+   <tbody id="patientsTable"></tbody>
+  </table>
+ </div>
+</section>
+
+<!-- APPOINTMENTS -->
+<section class="page" id="appointments">
+ <div class="section-title">
+  <h2>المواعيد</h2>
+  <button class="btn" onclick="openAppointmentModal()">+ موعد جديد</button>
+ </div>
+
+ <div class="toolbar">
+  <input class="search" id="appointmentSearch" placeholder="ابحث عن موعد..." oninput="renderAppointments()">
+  <input type="date" class="search" style="flex:0 0 180px" id="appointmentDate" onchange="renderAppointments()">
+ </div>
+
+ <div class="table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>التاريخ</th>
+     <th>الوقت</th>
+     <th>المريض</th>
+     <th>السبب</th>
+     <th>الحالة</th>
+     <th>الإجراءات</th>
+    </tr>
+   </thead>
+   <tbody id="appointmentsTable"></tbody>
+  </table>
+ </div>
+</section>
+
+<!-- MEDICAL -->
+<section class="page" id="medical">
+ <div class="section-title">
+  <h2>الملفات الطبية والاستشارات</h2>
+  <button class="btn" onclick="openConsultationModal()">+ استشارة جديدة</button>
+ </div>
+
+ <div class="toolbar">
+  <input class="search" id="medicalSearch" placeholder="ابحث باسم المريض أو التشخيص..." oninput="renderMedical()">
+ </div>
+
+ <div class="table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>التاريخ</th>
+     <th>المريض</th>
+     <th>الأعراض</th>
+     <th>التشخيص</th>
+     <th>العلاج</th>
+     <th>الإجراءات</th>
+    </tr>
+   </thead>
+   <tbody id="medicalTable"></tbody>
+  </table>
+ </div>
+</section>
+
+<!-- PRESCRIPTIONS -->
+<section class="page" id="prescriptions">
+ <div class="section-title">
+  <h2>الوصفات الطبية</h2>
+  <button class="btn" onclick="openPrescriptionModal()">+ وصفة جديدة</button>
+ </div>
+
+ <div class="table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>التاريخ</th>
+     <th>المريض</th>
+     <th>الأدوية</th>
+     <th>ملاحظات</th>
+     <th>الإجراءات</th>
+    </tr>
+   </thead>
+   <tbody id="prescriptionsTable"></tbody>
+  </table>
+ </div>
+</section>
+
+<!-- INVOICES -->
+<section class="page" id="invoices">
+ <div class="section-title">
+  <h2>الفواتير</h2>
+  <button class="btn" onclick="openInvoiceModal()">+ فاتورة جديدة</button>
+ </div>
+
+ <div class="table-wrap">
+  <table>
+   <thead>
+    <tr>
+     <th>رقم الفاتورة</th>
+     <th>التاريخ</th>
+     <th>المريض</th>
+     <th>الخدمة</th>
+     <th>المبلغ</th>
+     <th>الحالة</th>
+     <th>الإجراءات</th>
+    </tr>
+   </thead>
+   <tbody id="invoicesTable"></tbody>
+  </table>
+ </div>
+</section>
+
+<!-- BACKUP -->
+<section class="page" id="backup">
+ <div class="section-title"><h2>النسخ الاحتياطي</h2></div>
+
+ <div class="two-col">
+  <div class="card">
+   <h3>تصدير البيانات</h3>
+   <p style="color:#64748b;font-size:13px">
+    قم بتنزيل نسخة من جميع بيانات النظام إلى ملف JSON.
+   </p>
+   <button class="btn" onclick="exportData()">⬇️ تنزيل نسخة احتياطية</button>
+  </div>
+
+  <div class="card">
+   <h3>استعادة البيانات</h3>
+   <p style="color:#64748b;font-size:13px">
+    اختر ملف النسخة الاحتياطية لاستعادة البيانات.
+   </p>
+   <input type="file" id="restoreFile" accept=".json" onchange="importData(event)">
+  </div>
+ </div>
+
+ <div class="card" style="margin-top:18px">
+  <h3>إدارة البيانات</h3>
+  <p style="color:#64748b;font-size:13px">
+   حذف جميع البيانات المحلية من هذا الجهاز.
+  </p>
+  <button class="btn danger" onclick="clearAllData()">حذف جميع البيانات</button>
+ </div>
+</section>
+
+</div>
+</main>
+</div>
+
+<!-- PATIENT MODAL -->
+<div class="modal" id="patientModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h3 id="patientModalTitle">إضافة مريض</h3>
+   <button class="close" onclick="closeModal('patientModal')">×</button>
+  </div>
+  <div class="modal-body">
+   <form id="patientForm">
+    <input type="hidden" id="patientId">
+    <div class="form-grid">
+     <div class="field">
+      <label>الاسم الكامل *</label>
+      <input id="pName" required>
+     </div>
+     <div class="field">
+      <label>رقم الهاتف</label>
+      <input id="pPhone" type="tel">
+     </div>
+     <div class="field">
+      <label>تاريخ الميلاد</label>
+      <input id="pBirth" type="date">
+     </div>
+     <div class="field">
+      <label>الجنس</label>
+      <select id="pGender">
+       <option value="ذكر">ذكر</option>
+       <option value="أنثى">أنثى</option>
+      </select>
+     </div>
+     <div class="field">
+      <label>فصيلة الدم</label>
+      <select id="pBlood">
+       <option value="">غير محدد</option>
+       <option>A+</option><option>A-</option>
+       <option>B+</option><option>B-</option>
+       <option>AB+</option><option>AB-</option>
+       <option>O+</option><option>O-</option>
+      </select>
+     </div>
+     <div class="field">
+      <label>المهنة</label>
+      <input id="pJob">
+     </div>
+     <div class="field full">
+      <label>العنوان</label>
+      <input id="pAddress">
+     </div>
+     <div class="field full">
+      <label>الحساسيات</label>
+      <textarea id="pAllergies" placeholder="أدوية أو أطعمة تسبب حساسية..."></textarea>
+     </div>
+     <div class="field full">
+      <label>الأمراض المزمنة / التاريخ الطبي</label>
+      <textarea id="pHistory"></textarea>
+     </div>
+    </div>
+    <div class="modal-actions">
+     <button class="btn" type="submit">حفظ المريض</button>
+     <button class="btn secondary" type="button" onclick="closeModal('patientModal')">إلغاء</button>
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+<!-- APPOINTMENT MODAL -->
+<div class="modal" id="appointmentModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h3>إضافة موعد</h3>
+   <button class="close" onclick="closeModal('appointmentModal')">×</button>
+  </div>
+  <div class="modal-body">
+   <form id="appointmentForm">
+    <div class="form-grid">
+     <div class="field">
+      <label>المريض *</label>
+      <select id="aPatient" required></select>
+     </div>
+     <div class="field">
+      <label>التاريخ *</label>
+      <input id="aDate" type="date" required>
+     </div>
+     <div class="field">
+      <label>الوقت *</label>
+      <input id="aTime" type="time" required>
+     </div>
+     <div class="field">
+      <label>الحالة</label>
+      <select id="aStatus">
+       <option value="مؤكد">مؤكد</option>
+       <option value="في الانتظار">في الانتظار</option>
+       <option value="مكتمل">مكتمل</option>
+       <option value="ملغى">ملغى</option>
+      </select>
+     </div>
+     <div class="field full">
+      <label>سبب الزيارة</label>
+      <textarea id="aReason"></textarea>
+     </div>
+    </div>
+    <div class="modal-actions">
+     <button class="btn" type="submit">حفظ الموعد</button>
+     <button class="btn secondary" type="button" onclick="closeModal('appointmentModal')">إلغاء</button>
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+<!-- CONSULTATION MODAL -->
+<div class="modal" id="consultationModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h3>استشارة طبية جديدة</h3>
+   <button class="close" onclick="closeModal('consultationModal')">×</button>
+  </div>
+  <div class="modal-body">
+   <form id="consultationForm">
+    <div class="form-grid">
+     <div class="field">
+      <label>المريض *</label>
+      <select id="cPatient" required></select>
+     </div>
+     <div class="field">
+      <label>التاريخ *</label>
+      <input id="cDate" type="date" required>
+     </div>
+     <div class="field full">
+      <label>الأعراض / الشكوى</label>
+      <textarea id="cSymptoms"></textarea>
+     </div>
+     <div class="field full">
+      <label>التشخيص</label>
+      <textarea id="cDiagnosis"></textarea>
+     </div>
+     <div class="field full">
+      <label>العلاج / التوصيات</label>
+      <textarea id="cTreatment"></textarea>
+     </div>
+     <div class="field">
+      <label>ضغط الدم</label>
+      <input id="cBP" placeholder="120/80">
+     </div>
+     <div class="field">
+      <label>الوزن (كغ)</label>
+      <input id="cWeight" type="number">
+     </div>
+     <div class="field">
+      <label>الحرارة (°C)</label>
+      <input id="cTemp" type="number" step="0.1">
+     </div>
+    </div>
+    <div class="modal-actions">
+     <button class="btn" type="submit">حفظ الاستشارة</button>
+     <button class="btn secondary" type="button" onclick="closeModal('consultationModal')">إلغاء</button>
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+<!-- PRESCRIPTION MODAL -->
+<div class="modal" id="prescriptionModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h3>وصفة طبية جديدة</h3>
+   <button class="close" onclick="closeModal('prescriptionModal')">×</button>
+  </div>
+  <div class="modal-body">
+   <form id="prescriptionForm">
+    <div class="form-grid">
+     <div class="field">
+      <label>المريض *</label>
+      <select id="rPatient" required></select>
+     </div>
+     <div class="field">
+      <label>التاريخ *</label>
+      <input id="rDate" type="date" required>
+     </div>
+     <div class="field full">
+      <label>الأدوية *</label>
+      <textarea id="rMedicines" required placeholder="اسم الدواء - الجرعة - عدد المرات - المدة"></textarea>
+     </div>
+     <div class="field full">
+      <label>ملاحظات وتعليمات</label>
+      <textarea id="rNotes"></textarea>
+     </div>
+    </div>
+    <div class="modal-actions">
+     <button class="btn" type="submit">حفظ الوصفة</button>
+     <button class="btn secondary" type="button" onclick="closeModal('prescriptionModal')">إلغاء</button>
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+<!-- INVOICE MODAL -->
+<div class="modal" id="invoiceModal">
+ <div class="modal-box">
+  <div class="modal-head">
+   <h3>فاتورة جديدة</h3>
+   <button class="close" onclick="closeModal('invoiceModal')">×</button>
+  </div>
+  <div class="modal-body">
+   <form id="invoiceForm">
+    <div class="form-grid">
+     <div class="field">
+      <label>المريض *</label>
+      <select id="iPatient" required></select>
+     </div>
+     <div class="field">
+      <label>التاريخ *</label>
+      <input id="iDate" type="date" required>
+     </div>
+     <div class="field">
+      <label>الخدمة *</label>
+      <input id="iService" placeholder="فحص / استشارة / تحليل..." required>
+     </div>
+     <div class="field">
+      <label>المبلغ (دج) *</label>
+      <input id="iAmount" type="number" min="0" required>
+     </div>
+     <div class="field">
+      <label>حالة الدفع</label>
+      <select id="iStatus">
+       <option value="مدفوعة">مدفوعة</option>
+       <option value="غير مدفوعة">غير مدفوعة</option>
+       <option value="جزئي">دفع جزئي</option>
+      </select>
+     </div>
+     <div class="field">
+      <label>طريقة الدفع</label>
+      <select id="iMethod">
+       <option>نقدي</option>
+       <option>بطاقة</option>
+       <option>تحويل</option>
+      </select>
+     </div>
+    </div>
+    <div class="modal-actions">
+     <button class="btn" type="submit">حفظ الفاتورة</button>
+     <button class="btn secondary" type="button" onclick="closeModal('invoiceModal')">إلغاء</button>
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   KARNA / HICHAM CLINIC
+   نظام إدارة عيادة د. حمداد هشام
+   ملف واحد - يعمل محليًا ويحفظ البيانات في localStorage
+========================================================= */
+
+const DB_KEY = "HICHAM_CLINIC_DB_V1";
+
+let db = {
+ patients: [],
+ appointments: [],
+ consultations: [],
+ prescriptions: [],
+ invoices: []
+};
+
+function loadDB(){
+ try{
+  const saved = localStorage.getItem(DB_KEY);
+  if(saved){
+   const data = JSON.parse(saved);
+   db = {...db,...data};
+  }
+ }catch(e){
+  console.error(e);
+ }
+}
+
+function saveDB(){
+ localStorage.setItem(DB_KEY, JSON.stringify(db));
+ updateDashboard();
+}
+
+function uid(prefix){
+ return prefix + "_" + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+}
+
+function today(){
+ return new Date().toISOString().slice(0,10);
+}
+
+function formatDate(date){
+ if(!date) return "-";
+ const d = new Date(date+"T00:00:00");
+ return d.toLocaleDateString("ar-DZ");
+}
+
+function esc(value){
+ return String(value ?? "")
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+}
+
+function showToast(message){
+ const t=document.getElementById("toast");
+ t.textContent=message;
+ t.classList.add("show");
+ setTimeout(()=>t.classList.remove("show"),2500);
+}
+
+function showPage(page,button){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const target=document.getElementById(page);
+ if(target) target.classList.add("active");
+
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ if(button) button.classList.add("active");
+
+ const titles={
+  dashboard:"لوحة التحكم",
+  patients:"المرضى",
+  appointments:"المواعيد",
+  medical:"الملفات الطبية",
+  prescriptions:"الوصفات الطبية",
+  invoices:"الفواتير",
+  backup:"النسخ الاحتياطي"
+ };
+ document.getElementById("pageTitle").textContent=titles[page]||"العيادة";
+
+ if(page==="patients") renderPatients();
+ if(page==="appointments") renderAppointments();
+ if(page==="medical") renderMedical();
+ if(page==="prescriptions") renderPrescriptions();
+ if(page==="invoices") renderInvoices();
+
+ document.getElementById("sidebar").classList.remove("open");
+}
+
+function toggleSidebar(){
+ document.getElementById("sidebar").classList.toggle("open");
+}
+
+function closeModal(id){
+ document.getElementById(id).classList.remove("show");
+}
+
+function openModal(id){
+ document.getElementById(id).classList.add("show");
+}
+
+function patientName(id){
+ const p=db.patients.find(x=>x.id===id);
+ return p ? p.name : "مريض محذوف";
+}
+
+function calculateAge(birth){
+ if(!birth) return "-";
+ const b=new Date(birth);
+ const n=new Date();
+ let age=n.getFullYear()-b.getFullYear();
+ const m=n.getMonth()-b.getMonth();
+ if(m<0 || (m===0 && n.getDate()<b.getDate())) age--;
+ return age;
+}
+
+/* ---------------- PATIENTS ---------------- */
+
+function openPatientModal(id=null){
+ document.getElementById("patientForm").reset();
+ document.getElementById("patientId").value="";
+ document.getElementById("patientModalTitle").textContent="إضافة مريض";
+
+ if(id){
+  const p=db.patients.find(x=>x.id===id);
+  if(!p)return;
+
+  document.getElementById("patientModalTitle").textContent="تعديل بيانات المريض";
+  document.getElementById("patientId").value=p.id;
+  document.getElementById("pName").value=p.name||"";
+  document.getElementById("pPhone").value=p.phone||"";
+  document.getElementById("pBirth").value=p.birth||"";
+  document.getElementById("pGender").value=p.gender||"ذكر";
+  document.getElementById("pBlood").value=p.blood||"";
+  document.getElementById("pJob").value=p.job||"";
+  document.getElementById("pAddress").value=p.address||"";
+  document.getElementById("pAllergies").value=p.allergies||"";
+  document.getElementById("pHistory").value=p.history||"";
+ }
+ openModal("patientModal");
+}
+
+document.getElementById("patientForm").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ const id=document.getElementById("patientId").value;
+
+ const data={
+  id:id||uid("PAT"),
+  fileNo:id ? db.patients.find(x=>x.id===id).fileNo : "P-"+String(db.patients.length+1).padStart(4,"0"),
+  name:document.getElementById("pName").value.trim(),
+  phone:document.getElementById("pPhone").value.trim(),
+  birth:document.getElementById("pBirth").value,
+  gender:document.getElementById("pGender").value,
+  blood:document.getElementById("pBlood").value,
+  job:document.getElementById("pJob").value.trim(),
+  address:document.getElementById("pAddress").value.trim(),
+  allergies:document.getElementById("pAllergies").value.trim(),
+  history:document.getElementById("pHistory").value.trim(),
+  created:id ? db.patients.find(x=>x.id===id).created : today()
+ };
+
+ if(id){
+  const index=db.patients.findIndex(x=>x.id===id);
+  db.patients[index]=data;
+  showToast("تم تعديل بيانات المريض");
+ }else{
+  db.patients.push(data);
+  showToast("تمت إضافة المريض");
+ }
+
+ saveDB();
+ closeModal("patientModal");
+ renderPatients();
+ fillPatientSelects();
+});
+
+function renderPatients(){
+ const q=(document.getElementById("patientSearch")?.value||"").toLowerCase().trim();
+
+ const list=db.patients.filter(p=>
+  !q ||
+  p.name.toLowerCase().includes(q) ||
+  p.phone.toLowerCase().includes(q) ||
+  p.fileNo.toLowerCase().includes(q)
+ );
+
+ const tbody=document.getElementById("patientsTable");
+
+ if(!list.length){
+  tbody.innerHTML='<tr><td colspan="7" class="empty">لا توجد بيانات للمرضى</td></tr>';
+  return;
+ }
+
+ tbody.innerHTML=list.map(p=>`
+  <tr>
+   <td><b>${esc(p.fileNo)}</b></td>
+   <td>${esc(p.name)}</td>
+   <td>${esc(p.phone||"-")}</td>
+   <td>${esc(p.gender||"-")}</td>
+   <td>${calculateAge(p.birth)} سنة</td>
+   <td>${formatDate(p.created)}</td>
+   <td>
+    <button class="btn small" onclick="viewPatient('${p.id}')">عرض</button>
+    <button class="btn small secondary" onclick="openPatientModal('${p.id}')">تعديل</button>
+    <button class="btn small danger" onclick="deletePatient('${p.id}')">حذف</button>
+   </td>
+  </tr>
+ `).join("");
+}
+
+function deletePatient(id){
+ const p=db.patients.find(x=>x.id===id);
+ if(!p)return;
+
+ if(!confirm("هل تريد حذف المريض "+p.name+"؟"))return;
+
+ db.patients=db.patients.filter(x=>x.id!==id);
+ db.appointments=db.appointments.filter(x=>x.patientId!==id);
+ saveDB();
+ renderPatients();
+ fillPatientSelects();
+ showToast("تم حذف المريض");
+}
+
+function viewPatient(id){
+ const p=db.patients.find(x=>x.id===id);
+ if(!p)return;
+
+ const cons=db.consultations.filter(x=>x.patientId===id);
+ const apps=db.appointments.filter(x=>x.patientId===id);
+
+ document.getElementById("modalContainer").innerHTML="";
+ const div=document.createElement("div");
+ div.className="modal show";
+ div.id="patientViewModal";
+
+ div.innerHTML=`
+  <div class="modal-box">
+   <div class="modal-head">
+    <h3>الملف الطبي للمريض</h3>
+    <button class="close" onclick="closeModal('patientViewModal')">×</button>
+   </div>
+   <div class="modal-body">
+    <div class="patient-head">
+     <h2>${esc(p.name)}</h2>
+     <p>رقم الملف: <b>${esc(p.fileNo)}</b></p>
+     <p>${esc(p.phone||"لا يوجد هاتف")} · ${esc(p.gender||"")} · ${calculateAge(p.birth)} سنة</p>
+    </div>
+
+    <div class="detail-grid">
+     <div class="detail-item"><small>فصيلة الدم</small><strong>${esc(p.blood||"غير محدد")}</strong></div>
+     <div class="detail-item"><small>المهنة</small><strong>${esc(p.job||"غير محدد")}</strong></div>
+     <div class="detail-item"><small>تاريخ التسجيل</small><strong>${formatDate(p.created)}</strong></div>
+     <div class="detail-item"><small>الحساسيات</small><strong>${esc(p.allergies||"لا توجد")}</strong></div>
+     <div class="detail-item"><small>التاريخ الطبي</small><strong>${esc(p.history||"لا يوجد")}</strong></div>
+     <div class="detail-item"><small>العنوان</small><strong>${esc(p.address||"غير محدد")}</strong></div>
+    </div>
+
+    <div class="section-title"><h2>آخر الاستشارات</h2></div>
+    ${cons.length ? cons.slice().reverse().slice(0,5).map(c=>`
+     <div class="card" style="margin-bottom:10px;box-shadow:none">
+      <b>${formatDate(c.date)}</b>
+      <p><strong>التشخيص:</strong> ${esc(c.diagnosis||"-")}</p>
+      <p><strong>الأعراض:</strong> ${esc(c.symptoms||"-")}</p>
+      <p><strong>العلاج:</strong> ${esc(c.treatment||"-")}</p>
+     </div>
+    `).join("") : '<div class="empty">لا توجد استشارات</div>'}
+
+    <div class="section-title"><h2>المواعيد</h2></div>
+    ${apps.length ? apps.slice().reverse().slice(0,5).map(a=>`
+      <div class="card" style="margin-bottom:10px;box-shadow:none">
+       ${formatDate(a.date)} — ${esc(a.time)} — ${esc(a.reason||"زيارة")}
+       <span class="badge ${a.status==="مكتمل"?"green":a.status==="ملغى"?"red":"blue"}">${esc(a.status)}</span>
+      </div>
+    `).join("") : '<div class="empty">لا توجد مواعيد</div>'}
+
+    <div class="modal-actions no-print">
+     <button class="btn" onclick="window.print()">🖨️ طباعة الملف</button>
+     <button class="btn secondary" onclick="closeModal('patientViewModal')">إغلاق</button>
+    </div>
+   </div>
+  </div>
+ `;
+
+ document.getElementById("modalContainer").appendChild(div);
+}
+
+/* ---------------- SELECTS ---------------- */
+
+function fillPatientSelects(){
+ const selects=["aPatient","cPatient","rPatient","iPatient"];
+
+ selects.forEach(id=>{
+  const el=document.getElementById(id);
+  if(!el)return;
+
+  el.innerHTML='<option value="">اختر المريض</option>'+
+   db.patients.map(p=>`<option value="${p.id}">${esc(p.name)} — ${esc(p.fileNo)}</option>`).join("");
+ });
+}
+
+/* ---------------- APPOINTMENTS ---------------- */
+
+function openAppointmentModal(){
+ if(!db.patients.length){
+  showToast("أضف مريضًا أولًا");
+  showPage("patients");
+  return;
+ }
+
+ document.getElementById("appointmentForm").reset();
+ document.getElementById("aDate").value=today();
+ fillPatientSelects();
+ openModal("appointmentModal");
+}
+
+document.getElementById("appointmentForm").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ db.appointments.push({
+  id:uid("APP"),
+  patientId:document.getElementById("aPatient").value,
+  date:document.getElementById("aDate").value,
+  time:document.getElementById("aTime").value,
+  status:document.getElementById("aStatus").value,
+  reason:document.getElementById("aReason").value.trim(),
+  created:new Date().toISOString()
+ });
+
+ saveDB();
+ closeModal("appointmentModal");
+ renderAppointments();
+ showToast("تم حفظ الموعد");
+});
+
+function renderAppointments(){
+ const q=(document.getElementById("appointmentSearch")?.value||"").toLowerCase();
+ const date=document.getElementById("appointmentDate")?.value||"";
+
+ let list=db.appointments.filter(a=>{
+  const n=patientName(a.patientId).toLowerCase();
+  return (!q || n.includes(q) || (a.reason||"").toLowerCase().includes(q))
+   && (!date || a.date===date);
+ });
+
+ list.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+
+ const tbody=document.getElementById("appointmentsTable");
+
+ if(!list.length){
+  tbody.innerHTML='<tr><td colspan="6" class="empty">لا توجد مواعيد</td></tr>';
+  return;
+ }
+
+ tbody.innerHTML=list.map(a=>`
+  <tr>
+   <td>${formatDate(a.date)}</td>
+   <td><b>${esc(a.time)}</b></td>
+   <td>${esc(patientName(a.patientId))}</td>
+   <td>${esc(a.reason||"-")}</td>
+   <td>
+    <select onchange="changeAppointmentStatus('${a.id}',this.value)" style="padding:6px;border:1px solid #ddd;border-radius:7px">
+     ${["مؤكد","في الانتظار","مكتمل","ملغى"].map(s=>`<option ${a.status===s?"selected":""}>${s}</option>`).join("")}
+    </select>
+   </td>
+   <td>
+    <button class="btn small danger" onclick="deleteAppointment('${a.id}')">حذف</button>
+   </td>
+  </tr>
+ `).join("");
+}
+
+function changeAppointmentStatus(id,status){
+ const a=db.appointments.find(x=>x.id===id);
+ if(a){
+  a.status=status;
+  saveDB();
+  renderAppointments();
+ }
+}
+
+function deleteAppointment(id){
+ if(!confirm("حذف هذا الموعد؟"))return;
+ db.appointments=db.appointments.filter(x=>x.id!==id);
+ saveDB();
+ renderAppointments();
+ showToast("تم حذف الموعد");
+}
+
+/* ---------------- CONSULTATIONS ---------------- */
+
+function openConsultationModal(){
+ if(!db.patients.length){
+  showToast("أضف مريضًا أولًا");
+  showPage("patients");
+  return;
+ }
+
+ document.getElementById("consultationForm").reset();
+ document.getElementById("cDate").value=today();
+ fillPatientSelects();
+ openModal("consultationModal");
+}
+
+document.getElementById("consultationForm").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ db.consultations.push({
+  id:uid("CON"),
+  patientId:document.getElementById("cPatient").value,
+  date:document.getElementById("cDate").value,
+  symptoms:document.getElementById("cSymptoms").value.trim(),
+  diagnosis:document.getElementById("cDiagnosis").value.trim(),
+  treatment:document.getElementById("cTreatment").value.trim(),
+  bp:document.getElementById("cBP").value,
+  weight:document.getElementById("cWeight").value,
+  temp:document.getElementById("cTemp").value
+ });
+
+ saveDB();
+ closeModal("consultationModal");
+ renderMedical();
+ showToast("تم حفظ الاستشارة");
+});
+
+function renderMedical(){
+ const q=(document.getElementById("medicalSearch")?.value||"").toLowerCase();
+
+ const list=db.consultations.filter(c=>{
+  return !q ||
+   patientName(c.patientId).toLowerCase().includes(q) ||
+   (c.diagnosis||"").toLowerCase().includes(q);
+ }).slice().reverse();
+
+ const tbody=document.getElementById("medicalTable");
+
+ if(!list.length){
+  tbody.innerHTML='<tr><td colspan="6" class="empty">لا توجد استشارات</td></tr>';
+  return;
+ }
+
+ tbody.innerHTML=list.map(c=>`
+  <tr>
+   <td>${formatDate(c.date)}</td>
+   <td>${esc(patientName(c.patientId))}</td>
+   <td>${esc(c.symptoms||"-")}</td>
+   <td>${esc(c.diagnosis||"-")}</td>
+   <td>${esc(c.treatment||"-")}</td>
+   <td>
+    <button class="btn small danger" onclick="deleteConsultation('${c.id}')">حذف</button>
+   </td>
+  </tr>
+ `).join("");
+}
+
+function deleteConsultation(id){
+ if(!confirm("حذف هذه الاستشارة؟"))return;
+ db.consultations=db.consultations.filter(x=>x.id!==id);
+ saveDB();
+ renderMedical();
+ showToast("تم حذف الاستشارة");
+}
+
+/* ---------------- PRESCRIPTIONS ---------------- */
+
+function openPrescriptionModal(){
+ if(!db.patients.length){
+  showToast("أضف مريضًا أولًا");
+  showPage("patients");
+  return;
+ }
+
+ document.getElementById("prescriptionForm").reset();
+ document.getElementById("rDate").value=today();
+ fillPatientSelects();
+ openModal("prescriptionModal");
+}
+
+document.getElementById("prescriptionForm").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ db.prescriptions.push({
+  id:uid("RX"),
+  patientId:document.getElementById("rPatient").value,
+  date:document.getElementById("rDate").value,
+  medicines:document.getElementById("rMedicines").value.trim(),
+  notes:document.getElementById("rNotes").value.trim()
+ });
+
+ saveDB();
+ closeModal("prescriptionModal");
+ renderPrescriptions();
+ showToast("تم حفظ الوصفة");
+});
+
+function renderPrescriptions(){
+ const tbody=document.getElementById("prescriptionsTable");
+
+ if(!db.prescriptions.length){
+  tbody.innerHTML='<tr><td colspan="5" class="empty">لا توجد وصفات</td></tr>';
+  return;
+ }
+
+ tbody.innerHTML=db.prescriptions.slice().reverse().map(r=>`
+  <tr>
+   <td>${formatDate(r.date)}</td>
+   <td>${esc(patientName(r.patientId))}</td>
+   <td style="white-space:pre-line">${esc(r.medicines)}</td>
+   <td>${esc(r.notes||"-")}</td>
+   <td>
+    <button class="btn small" onclick="printPrescription('${r.id}')">🖨️ طباعة</button>
+    <button class="btn small danger" onclick="deletePrescription('${r.id}')">حذف</button>
+   </td>
+  </tr>
+ `).join("");
+}
+
+function deletePrescription(id){
+ if(!confirm("حذف الوصفة؟"))return;
+ db.prescriptions=db.prescriptions.filter(x=>x.id!==id);
+ saveDB();
+ renderPrescriptions();
+ showToast("تم حذف الوصفة");
+}
+
+function printPrescription(id){
+ const r=db.prescriptions.find(x=>x.id===id);
+ if(!r)return;
+
+ const p=db.patients.find(x=>x.id===r.patientId);
+
+ const w=window.open("","_blank","width=800,height=700");
+ w.document.write(`
+ <!DOCTYPE html>
+ <html lang="ar" dir="rtl">
+ <head>
+ <meta charset="UTF-8">
+ <title>وصفة طبية</title>
+ <style>
+ body{font-family:Arial,Tahoma;padding:40px;color:#111}
+ .head{text-align:center;border-bottom:2px solid #0f766e;padding-bottom:20px}
+ h1{color:#0f766e}
+ .patient{margin:25px 0;padding:15px;background:#f1f5f9}
+ .rx{font-size:18px;white-space:pre-line;line-height:2}
+ .footer{margin-top:70px;text-align:left}
+ </style>
+ </head>
+ <body>
+ <div class="head">
+  <h1>عيادة الدكتور حمداد هشام</h1>
+  <div>وصفة طبية</div>
+ </div>
+ <div class="patient">
+  <b>المريض:</b> ${esc(p?.name||"")}<br>
+  <b>رقم الملف:</b> ${esc(p?.fileNo||"")}<br>
+  <b>التاريخ:</b> ${formatDate(r.date)}
+ </div>
+ <h2>Rp:</h2>
+ <div class="rx">${esc(r.medicines)}</div>
+ <p>${esc(r.notes||"")}</p>
+ <div class="footer">
+  <b>د. حمداد هشام</b><br>
+  إمضاء الطبيب
+ </div>
+ <script>window.print();<\/script>
+ </body>
+ </html>
+ `);
+ w.document.close();
+}
+
+/* ---------------- INVOICES ---------------- */
+
+function openInvoiceModal(){
+ if(!db.patients.length){
+  showToast("أضف مريضًا أولًا");
+  showPage("patients");
+  return;
+ }
+
+ document.getElementById("invoiceForm").reset();
+ document.getElementById("iDate").value=today();
+ fillPatientSelects();
+ openModal("invoiceModal");
+}
+
+document.getElementById("invoiceForm").addEventListener("submit",function(e){
+ e.preventDefault();
+
+ db.invoices.push({
+  id:uid("INV"),
+  number:"F-"+String(db.invoices.length+1).padStart(5,"0"),
+  patientId:document.getElementById("iPatient").value,
+  date:document.getElementById("iDate").value,
+  service:document.getElementById("iService").value.trim(),
+  amount:Number(document.getElementById("iAmount").value)||0,
+  status:document.getElementById("iStatus").value,
+  method:document.getElementById("iMethod").value
+ });
+
+ saveDB();
+ closeModal("invoiceModal");
+ renderInvoices();
+ showToast("تم حفظ الفاتورة");
+});
+
+function renderInvoices(){
+ const tbody=document.getElementById("invoicesTable");
+
+ if(!db.invoices.length){
+  tbody.innerHTML='<tr><td colspan="7" class="empty">لا توجد فواتير</td></tr>';
+  return;
+ }
+
+ tbody.innerHTML=db.invoices.slice().reverse().map(i=>`
+  <tr>
+   <td><b>${esc(i.number)}</b></td>
+   <td>${formatDate(i.date)}</td>
+   <td>${esc(patientName(i.patientId))}</td>
+   <td>${esc(i.service)}</td>
+   <td><b>${Number(i.amount).toLocaleString("ar-DZ")} دج</b></td>
+   <td>
+    <span class="badge ${i.status==="مدفوعة"?"green":i.status==="جزئي"?"orange":"red"}">
+     ${esc(i.status)}
+    </span>
+   </td>
+   <td>
+    <button class="btn small" onclick="printInvoice('${i.id}')">🖨️</button>
+    <button class="btn small danger" onclick="deleteInvoice('${i.id}')">حذف</button>
+   </td>
+  </tr>
+ `).join("");
+}
+
+function deleteInvoice(id){
+ if(!confirm("حذف الفاتورة؟"))return;
+ db.invoices=db.invoices.filter(x=>x.id!==id);
+ saveDB();
+ renderInvoices();
+ showToast("تم حذف الفاتورة");
+}
+
+function printInvoice(id){
+ const i=db.invoices.find(x=>x.id===id);
+ if(!i)return;
+
+ const p=db.patients.find(x=>x.id===i.patientId);
+
+ const w=window.open("","_blank","width=800,height=700");
+ w.document.write(`
+ <!DOCTYPE html>
+ <html lang="ar" dir="rtl">
+ <head>
+ <meta charset="UTF-8">
+ <title>فاتورة ${esc(i.number)}</title>
+ <style>
+ body{font-family:Arial,Tahoma;padding:40px}
+ .head{text-align:center;border-bottom:2px solid #0f766e;padding-bottom:20px}
+ table{width:100%;border-collapse:collapse;margin-top:30px}
+ td,th{padding:14px;border:1px solid #ddd}
+ .total{font-size:22px;font-weight:bold;margin-top:25px;text-align:left}
+ </style>
+ </head>
+ <body>
+ <div class="head">
+  <h1>عيادة الدكتور حمداد هشام</h1>
+  <p>فاتورة رقم ${esc(i.number)}</p>
+ </div>
+ <p><b>المريض:</b> ${esc(p?.name||"")}</p>
+ <p><b>التاريخ:</b> ${formatDate(i.date)}</p>
+ <table>
+  <tr><th>الخدمة</th><th>المبلغ</th></tr>
+  <tr><td>${esc(i.service)}</td><td>${Number(i.amount).toLocaleString("ar-DZ")} دج</td></tr>
+ </table>
+ <div class="total">المجموع: ${Number(i.amount).toLocaleString("ar-DZ")} دج</div>
+ <p>حالة الدفع: ${esc(i.status)}</p>
+ <p>طريقة الدفع: ${esc(i.method)}</p>
+ <script>window.print();<\/script>
+ </body>
+ </html>
+ `);
+ w.document.close();
+}
+
+/* ---------------- DASHBOARD ---------------- */
+
+function updateDashboard(){
+ document.getElementById("statPatients").textContent=db.patients.length;
+
+ const t=today();
+ const apps=db.appointments.filter(a=>a.date===t && a.status!=="ملغى");
+ document.getElementById("statAppointments").textContent=apps.length;
+
+ document.getElementById("statConsultations").textContent=db.consultations.length;
+
+ const revenue=db.invoices.reduce((sum,i)=>{
+  return i.status==="مدفوعة" ? sum+Number(i.amount||0) : sum;
+ },0);
+
+ document.getElementById("statRevenue").textContent=
+  revenue.toLocaleString("ar-DZ")+" دج";
+
+ const box=document.getElementById("todayAppointments");
+
+ if(!apps.length){
+  box.innerHTML='<div class="empty">لا توجد مواعيد اليوم</div>';
+  return;
+ }
+
+ apps.sort((a,b)=>a.time.localeCompare(b.time));
+
+ box.innerHTML=apps.map(a=>`
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee">
+   <div>
+    <b>${esc(a.time)}</b>
+    <div style="font-size:13px;margin-top:4px">${esc(patientName(a.patientId))}</div>
+   </div>
+   <span class="badge ${a.status==="مؤكد"?"blue":"green"}">${esc(a.status)}</span>
+  </div>
+ `).join("");
+}
+
+/* ---------------- BACKUP ---------------- */
+
+function exportData(){
+ const data={
+  ...db,
+  exportedAt:new Date().toISOString(),
+  application:"Hicham Clinic",
+  doctor:"د. حمداد هشام"
+ };
+
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="hicham-clinic-backup-"+today()+".json";
+ a.click();
+ URL.revokeObjectURL(url);
+ showToast("تم تنزيل النسخة الاحتياطية");
+}
+
+function importData(event){
+ const file=event.target.files[0];
+ if(!file)return;
+
+ const reader=new FileReader();
+
+ reader.onload=function(e){
+  try{
+   const data=JSON.parse(e.target.result);
+
+   if(!data || !Array.isArray(data.patients)){
+    throw new Error("invalid");
+   }
+
+   db={
+    patients:data.patients||[],
+    appointments:data.appointments||[],
+    consultations:data.consultations||[],
+    prescriptions:data.prescriptions||[],
+    invoices:data.invoices||[]
+   };
+
+   saveDB();
+   renderAll();
+   showToast("تمت استعادة البيانات بنجاح");
+  }catch(err){
+   alert("ملف النسخة الاحتياطية غير صالح.");
+  }
+ };
+
+ reader.readAsText(file);
+ event.target.value="";
+}
+
+function clearAllData(){
+ if(!confirm("تحذير: سيتم حذف جميع المرضى والمواعيد والملفات والفواتير من هذا الجهاز. هل أنت متأكد؟"))return;
+
+ localStorage.removeItem(DB_KEY);
+
+ db={
+  patients:[],
+  appointments:[],
+  consultations:[],
+  prescriptions:[],
+  invoices:[]
+ };
+
+ renderAll();
+ showToast("تم حذف جميع البيانات");
+}
+
+/* ---------------- INITIALIZATION ---------------- */
+
+function renderAll(){
+ renderPatients();
+ renderAppointments();
+ renderMedical();
+ renderPrescriptions();
+ renderInvoices();
+ fillPatientSelects();
+ updateDashboard();
+}
+
+document.getElementById("today").textContent=
+ new Date().toLocaleDateString("ar-DZ",{
+  weekday:"long",
+  year:"numeric",
+  month:"long",
+  day:"numeric"
+ });
+
+const container=document.createElement("div");
+container.id="modalContainer";
+document.body.appendChild(container);
+
+loadDB();
+renderAll();
+
+/* إغلاق النوافذ عند الضغط خارجها */
+document.querySelectorAll(".modal").forEach(modal=>{
+ modal.addEventListener("click",function(e){
+  if(e.target===modal) modal.classList.remove("show");
+ });
+});
+</script>
+
+</body>
+</html>
